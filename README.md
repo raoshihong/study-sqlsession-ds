@@ -22,3 +22,7 @@ org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithi
     
 上面的事物管理器只会创建一个实例，所以在此进入@Transaction方法时,此时的DataSource仍然为默认的数据源
 
+
+
+https://www.cnblogs.com/ityouknow/p/4977136.html
+

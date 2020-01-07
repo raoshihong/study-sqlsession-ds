@@ -28,12 +28,12 @@ public class ChannelsController {
 
     @GetMapping("/save")
     public void save(){
-        try {
-            //使用默认数据源
-            channelsService.saveA();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            //使用默认数据源
+//            channelsService.saveA();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
         //动态添加数据源
 
@@ -91,13 +91,13 @@ public class ChannelsController {
             e.printStackTrace();
         }
 
-        try{
-
-            //切换数据源
-            SqlSessionFactoryHolder.setType("db3");
-            channelsService.saveC();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try{
+//
+//            //切换数据源
+//            SqlSessionFactoryHolder.setType("db3");
+//            channelsService.saveC();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 }
