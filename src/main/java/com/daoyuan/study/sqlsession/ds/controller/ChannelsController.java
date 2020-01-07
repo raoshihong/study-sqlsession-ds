@@ -28,76 +28,76 @@ public class ChannelsController {
 
     @GetMapping("/save")
     public void save(){
-//        try {
-//            //使用默认数据源
-//            channelsService.saveA();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try {
+            //使用默认数据源
+            channelsService.saveA();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //动态添加数据源
 
-        String url = "jdbc:mysql://localhost:3306/db1";
-        String username = "root";
-        String password = "123456";
-        String driverClass = "org.gjt.mm.mysql.Driver";
+//        String url = "jdbc:mysql://localhost:3306/db1";
+//        String username = "root";
+//        String password = "123456";
+//        String driverClass = "org.gjt.mm.mysql.Driver";
+//
+//        List<DataSourceConfig> dataSourceConfigs = new ArrayList<>();
+//        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+//        dataSourceConfig.setAlias("db1");
+//        dataSourceConfig.setDbUrl(url);
+//        dataSourceConfig.setDbUsername(username);
+//        dataSourceConfig.setDbPassword(password);
+//        dataSourceConfig.setDbDriverClass(driverClass);
+//
+//        dataSourceConfigs.add(dataSourceConfig);
+//
+//
+//        url = "jdbc:mysql://localhost:3306/db2";
+//        username = "root";
+//        password = "123456";
+//        driverClass = "org.gjt.mm.mysql.Driver";
+//
+//        DataSourceConfig dataSourceConfig1 = new DataSourceConfig();
+//        dataSourceConfig1.setAlias("db2");
+//        dataSourceConfig1.setDbUrl(url);
+//        dataSourceConfig1.setDbUsername(username);
+//        dataSourceConfig1.setDbPassword(password);
+//        dataSourceConfig1.setDbDriverClass(driverClass);
+//
+//        dataSourceConfigs.add(dataSourceConfig1);
+//
+//        url = "jdbc:mysql://localhost:3306/db3";
+//        username = "root";
+//        password = "123456";
+//        driverClass = "org.gjt.mm.mysql.Driver";
+//
+//        DataSourceConfig dataSourceConfig2 = new DataSourceConfig();
+//        dataSourceConfig2.setAlias("db3");
+//        dataSourceConfig2.setDbUrl(url);
+//        dataSourceConfig2.setDbUsername(username);
+//        dataSourceConfig2.setDbPassword(password);
+//        dataSourceConfig2.setDbDriverClass(driverClass);
+//
+//        dataSourceConfigs.add(dataSourceConfig2);
 
-        List<DataSourceConfig> dataSourceConfigs = new ArrayList<>();
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setAlias("db1");
-        dataSourceConfig.setDbUrl(url);
-        dataSourceConfig.setDbUsername(username);
-        dataSourceConfig.setDbPassword(password);
-        dataSourceConfig.setDbDriverClass(driverClass);
 
-        dataSourceConfigs.add(dataSourceConfig);
-
-
-        url = "jdbc:mysql://localhost:3306/db2";
-        username = "root";
-        password = "123456";
-        driverClass = "org.gjt.mm.mysql.Driver";
-
-        DataSourceConfig dataSourceConfig1 = new DataSourceConfig();
-        dataSourceConfig1.setAlias("db2");
-        dataSourceConfig1.setDbUrl(url);
-        dataSourceConfig1.setDbUsername(username);
-        dataSourceConfig1.setDbPassword(password);
-        dataSourceConfig1.setDbDriverClass(driverClass);
-
-        dataSourceConfigs.add(dataSourceConfig1);
-
-        url = "jdbc:mysql://localhost:3306/db3";
-        username = "root";
-        password = "123456";
-        driverClass = "org.gjt.mm.mysql.Driver";
-
-        DataSourceConfig dataSourceConfig2 = new DataSourceConfig();
-        dataSourceConfig2.setAlias("db3");
-        dataSourceConfig2.setDbUrl(url);
-        dataSourceConfig2.setDbUsername(username);
-        dataSourceConfig2.setDbPassword(password);
-        dataSourceConfig2.setDbDriverClass(driverClass);
-
-        dataSourceConfigs.add(dataSourceConfig2);
-
-
-        customSqlSessionTemplate.setTargetSqlSessionFactorys(customSqlSessionFactoryBuilder.buildTargetSqlSessionFactories(dataSourceConfigs));
+//        customSqlSessionTemplate.setTargetSqlSessionFactorys(customSqlSessionFactoryBuilder.buildTargetSqlSessionFactories(dataSourceConfigs));
         try {
             //切换数据源
-//            SqlSessionFactoryHolder.setType("db2");
+            SqlSessionFactoryHolder.setType("db2");
             channelsService.saveB();
         }catch (Exception e){
             e.printStackTrace();
         }
 
-//        try{
-//
-//            //切换数据源
-//            SqlSessionFactoryHolder.setType("db3");
-//            channelsService.saveC();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try{
+
+            //切换数据源
+            SqlSessionFactoryHolder.setType("db3");
+            channelsService.saveC();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

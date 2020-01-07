@@ -13,10 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -122,11 +119,69 @@ public class CustomSqlSessionFactoryBuilder {
      * @return
      */
     public DataSource buildDefaultDataSource(){
+        String url = "jdbc:mysql://localhost:3306/db1";
+        String username = "root";
+        String password = "123456";
+        String driverClass = "org.gjt.mm.mysql.Driver";
+
+        List<DataSourceConfig> dataSourceConfigs = new ArrayList<>();
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setAlias("db1");
+        dataSourceConfig.setDbUrl(url);
+        dataSourceConfig.setDbUsername(username);
+        dataSourceConfig.setDbPassword(password);
+        dataSourceConfig.setDbDriverClass(driverClass);
+
+        dataSourceConfigs.add(dataSourceConfig);
+
+
+        url = "jdbc:mysql://localhost:3306/db2";
+        username = "root";
+        password = "123456";
+        driverClass = "org.gjt.mm.mysql.Driver";
+
+        DataSourceConfig dataSourceConfig1 = new DataSourceConfig();
+        dataSourceConfig1.setAlias("db2");
+        dataSourceConfig1.setDbUrl(url);
+        dataSourceConfig1.setDbUsername(username);
+        dataSourceConfig1.setDbPassword(password);
+        dataSourceConfig1.setDbDriverClass(driverClass);
+
+        dataSourceConfigs.add(dataSourceConfig1);
+
+        url = "jdbc:mysql://localhost:3306/db3";
+        username = "root";
+        password = "123456";
+        driverClass = "org.gjt.mm.mysql.Driver";
+
+        DataSourceConfig dataSourceConfig2 = new DataSourceConfig();
+        dataSourceConfig2.setAlias("db3");
+        dataSourceConfig2.setDbUrl(url);
+        dataSourceConfig2.setDbUsername(username);
+        dataSourceConfig2.setDbPassword(password);
+        dataSourceConfig2.setDbDriverClass(driverClass);
+
+        dataSourceConfigs.add(dataSourceConfig2);
+
+        Map<Object,Object> targetDataSources = new HashMap<>();
+
+
+        for (DataSourceConfig dataSourceConfig3:dataSourceConfigs){
+            String alias = dataSourceConfig3.getAlias();
+            url = dataSourceConfig3.getDbUrl();
+            username = dataSourceConfig3.getDbUsername();
+            password = dataSourceConfig3.getDbPassword();
+            String driverClassName = dataSourceConfig3.getDbDriverClass();
+            String appCode = dataSourceConfig3.getAppCode();
+            DataSource dataSource = buildTargetDataSource(url, username, password, driverClassName);
+
+            targetDataSources.put(alias,dataSource);
+        }
+
+
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.configFromPropety(getProperties());
 
-        Map<Object,Object> targetDataSources = new HashMap<>();
-        targetDataSources.put("db1",druidDataSource);
         DynamicDataSource dynamicDataSource = buildDynamicDataSource(druidDataSource,targetDataSources);
         defaultDynamicDataSource = dynamicDataSource;
         return dynamicDataSource;
