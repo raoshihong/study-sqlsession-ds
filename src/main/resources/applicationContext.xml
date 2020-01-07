@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+	<!--&lt;!&ndash; 配置c3p0数据源 &ndash;&gt;-->
+	<!--<bean id="dataSourceOracle" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+		<!--<property name="driverClass" value="${datasource.driver}"/>-->
+		<!--<property name="jdbcUrl" value="${datasource.url}"/>-->
+		<!--<property name="user" value="${datasource.username}"/>-->
+		<!--<property name="password" value="${datasource.password}"/>-->
+
+		<!--<property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>-->
+		<!--<property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>-->
+		<!--<property name="minPoolSize" value="${c3p0.minPoolSize}"/>-->
+		<!--<property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>-->
+		<!--<property name="maxIdleTime" value="${c3p0.maxIdleTime}"/>-->
+		<!--<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>-->
+		<!--<property name="maxStatements" value="${c3p0.maxStatements}"/>-->
+		<!--<property name="numHelperThreads" value="${c3p0.numHelperThreads}"/>-->
+		<!--<property name="preferredTestQuery" value="${c3p0.preferredTestQuery}"/>-->
+		<!--<property name="testConnectionOnCheckout" value="${c3p0.testConnectionOnCheckout}"/>-->
+	<!--</bean>-->
+
+	<!--<bean id="dataSourceMySQL" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+		<!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+		<!--<property name="jdbcUrl" value="jdbc:mysql://172.31.108.178:3306/world?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>-->
+		<!--<property name="user" value="root"/>-->
+		<!--<property name="password" value="jp2011"/>-->
+
+		<!--<property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>-->
+		<!--<property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>-->
+		<!--<property name="minPoolSize" value="${c3p0.minPoolSize}"/>-->
+		<!--<property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>-->
+		<!--<property name="maxIdleTime" value="${c3p0.maxIdleTime}"/>-->
+		<!--<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>-->
+		<!--<property name="maxStatements" value="${c3p0.maxStatements}"/>-->
+		<!--<property name="numHelperThreads" value="${c3p0.numHelperThreads}"/>-->
+		<!--<property name="preferredTestQuery" value="${c3p0.preferredTestQuery}"/>-->
+		<!--<property name="testConnectionOnCheckout" value="${c3p0.testConnectionOnCheckout}"/>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 配置SqlSessionFactoryBean &ndash;&gt;-->
+	<!--<bean id="oracleSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+		<!--<property name="dataSource" ref="dataSourceOracle"/>-->
+		<!--<property name="configLocation" value="classpath:mybatis.xml"/>-->
+		<!--&lt;!&ndash; mapper和resultmap配置路径 &ndash;&gt;-->
+		<!--<property name="mapperLocations">-->
+			<!--<list>-->
+				<!--&lt;!&ndash; 表示在com.hoo目录下的任意包下的resultmap包目录中，以-resultmap.xml或-mapper.xml结尾所有文件 &ndash;&gt;-->
+				<!--<value>classpath:com/hoo/framework/mybatis/mybatis-common.xml</value>-->
+				<!--<value>classpath:com/hoo/**/resultmap/*-resultmap.xml</value>-->
+				<!--<value>classpath:com/hoo/**/mapper/*-mapper.xml</value>-->
+				<!--<value>classpath:com/hoo/**/mapper/**/*-mapper.xml</value>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 配置SqlSessionFactoryBean &ndash;&gt;-->
+	<!--<bean id="mysqlSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+		<!--<property name="dataSource" ref="dataSourceMySQL"/>-->
+		<!--<property name="configLocation" value="classpath:mybatis.xml"/>-->
+		<!--&lt;!&ndash; mapper和resultmap配置路径 &ndash;&gt;-->
+		<!--<property name="mapperLocations">-->
+			<!--<list>-->
+				<!--&lt;!&ndash; 表示在com.hoo目录下的任意包下的resultmap包目录中，以-resultmap.xml或-mapper.xml结尾所有文件 （oracle和mysql扫描的配置和路径不一样，如果是公共的都扫描 这里要区分下，不然就报错 找不到对应的表、视图）&ndash;&gt;-->
+				<!--<value>classpath:com/hoo/framework/mybatis/mybatis-common.xml</value>-->
+				<!--<value>classpath:com/hoo/**/resultmap/*-mysql-resultmap.xml</value>-->
+				<!--<value>classpath:com/hoo/**/mapper/*-mysql-mapper.xml</value>-->
+				<!--<value>classpath:com/hoo/**/mapper/**/*-mysql-mapper.xml</value>-->
+				<!--<value>classpath:com/hoo/**/mapper/**/multiple-datasource-mapper.xml</value>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 配置自定义的SqlSessionTemplate模板，注入相关配置 &ndash;&gt;-->
+	<!--<bean id="sqlSessionTemplate" class="com.hoo.framework.mybatis.support.CustomSqlSessionTemplate">-->
+		<!--<constructor-arg ref="oracleSqlSessionFactory" />-->
+		<!--<property name="targetSqlSessionFactorys">-->
+			<!--<map>-->
+				<!--<entry value-ref="oracleSqlSessionFactory" key="oracle"/>-->
+				<!--<entry value-ref="mysqlSqlSessionFactory" key="mysql"/>-->
+			<!--</map>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!-- 通过扫描的模式，扫描目录在com/hoo/任意目录下的mapper目录下，所有的mapper都需要继承SqlMapper接口的接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.daoyuan.study.sqlsession.ds.mapper"/>
+		<!-- 注意注入sqlSessionTemplate -->
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/>
+		<!--<property name="markerInterface" value="com.hoo.framework.mybatis.SqlMapper"/>-->
+	</bean>
+
+</beans>

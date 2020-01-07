@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daoyuan.study.sqlsession.ds.mapper.DataSourceConfigMapper" >
+    <resultMap id="BaseResultMap" type="com.daoyuan.study.sqlsession.ds.entity.DataSourceConfig">
+        <id column="id" property="id" />
+        <result column="alias" property="alias" />
+        <result column="db_url" property="dbUrl" />
+        <result column="db_username" property="dbUsername" />
+        <result column="db_password" property="dbPassword" />
+        <result column="db_type" property="dbType" />
+        <result column="db_driver_class" property="dbDriverClass" />
+        <result column="app_code" property="appCode" />
+    </resultMap>
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from data_source_config
+    </select>
+</mapper>
