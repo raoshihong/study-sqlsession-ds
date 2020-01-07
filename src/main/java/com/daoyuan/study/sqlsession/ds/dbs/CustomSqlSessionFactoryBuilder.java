@@ -77,7 +77,9 @@ public class CustomSqlSessionFactoryBuilder {
     }
 
     public DataSource buildDefaultDataSource(){
-        DruidDataSource druidDataSource = new DruidDataSource();
+        DataSourceProxy dataSourceProxy = new DataSourceProxy();
+
+        DruidDataSource druidDataSource =  (DruidDataSource) dataSourceProxy.newInstance(new DruidDataSource());
         druidDataSource.configFromPropety(getProperties());
         return druidDataSource;
     }
