@@ -85,19 +85,19 @@ public class ChannelsController {
         customSqlSessionTemplate.setTargetSqlSessionFactorys(customSqlSessionFactoryBuilder.buildTargetSqlSessionFactories(dataSourceConfigs));
         try {
             //切换数据源
-            SqlSessionFactoryHolder.setType("db2");
+//            SqlSessionFactoryHolder.setType("db2");
             channelsService.saveB();
         }catch (Exception e){
             e.printStackTrace();
         }
 
-//        try{
-//
-//            //切换数据源
-//            SqlSessionFactoryHolder.setType("db3");
-//            channelsService.saveC();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try{
+
+            //切换数据源
+            SqlSessionFactoryHolder.setType("db3");
+            channelsService.saveC();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

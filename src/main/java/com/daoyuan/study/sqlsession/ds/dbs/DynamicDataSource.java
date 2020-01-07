@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * 动态数据源的添加和获取的类(因为在进入@Transaction方法前会被事务拦截器拦截到,此时会去获取当前数据源)
  *
- * 实际上就是代理了数据源
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
@@ -38,8 +37,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         //每次都从当前线程中获取对应的数据源对象
-//        return DataSourceContextHolder.getDBAlias();
-        return null;
+        return SqlSessionFactoryHolder.getType();
     }
 
 }

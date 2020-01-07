@@ -11,7 +11,8 @@ org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithi
     
     开始事务：
     org.springframework.jdbc.datasource.DataSourceTransactionManager.doGetTransaction
-        在这里调用datasource.getConnection()获取连接
+        在这里调用datasource.getConnection()获取连接,这里是关键点，如果我们注入的是DynamicDatasource则可以进行数据源切换
+        因为在DynamicDatasource中重写了getConnection()方法
     
     org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin
     开启事务
