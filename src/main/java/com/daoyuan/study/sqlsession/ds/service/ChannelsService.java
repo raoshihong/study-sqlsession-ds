@@ -41,7 +41,7 @@ public class ChannelsService {
         channels.setAppCode("1");
         channels.setLevelType("a");
         channelsMapper.insert(channels);
-        int i=10/0;
+//        int i=10/0;
     }
 
 //    @NeedDataSource(alias = "db2")
@@ -68,7 +68,7 @@ public class ChannelsService {
         channels.setAppCode("3");
         channels.setLevelType("c");
         channelsMapper.insert(channels);
-//        int i=10/0;
+        int i=10/0;
 
 //        SqlSessionFactoryHolder.setType("db1");
 //        channels.setName("ff");
@@ -76,7 +76,7 @@ public class ChannelsService {
 //        channels.setLevelType("f");
 //        channelsMapper.insert(channels);
 
-        int i = 10/0;
+//        int i = 10/0;
 
     }
 

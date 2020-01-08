@@ -5,7 +5,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +24,6 @@ public class DBSConfig {
 
     //注入数据源给事务管理器
     @Bean(name = "defaultDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dynamicDataSource(){
         return customSqlSessionFactoryBuilder.buildDataSource();
     }
