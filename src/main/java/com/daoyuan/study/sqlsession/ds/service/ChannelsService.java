@@ -56,7 +56,7 @@ public class ChannelsService {
 
         System.out.println("aa");
 
-        int i=10/0;
+//        int i=10/0;
     }
 
 //    @NeedDataSource(alias = "db3")
@@ -68,18 +68,16 @@ public class ChannelsService {
         channels.setAppCode("3");
         channels.setLevelType("c");
         channelsMapper.insert(channels);
-        int i=10/0;
+//        int i=10/0;
 
-//        SqlSessionFactoryHolder.setType("db1");
-//        channels.setName("ff");
-//        channels.setAppCode("4");
-//        channels.setLevelType("f");
-//        channelsMapper.insert(channels);
+        //同一个事务中,无法做到多数据源的切换
+        SqlSessionFactoryHolder.setType("db1");
+        channels.setName("ff");
+        channels.setAppCode("4");
+        channels.setLevelType("f");
+        channelsMapper.insert(channels);
 
 //        int i = 10/0;
 
     }
-
-
-
 }
