@@ -7,11 +7,10 @@ import lombok.Setter;
 @Getter
 public class DataSourceConfig {
     private Long id;
-    private String alias;
     private String dbUrl;
     private String dbUsername;
     private String dbPassword;
     private String dbType;
     private String dbDriverClass;
-    private String appCode;
+    private String alias;
 }

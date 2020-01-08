@@ -35,8 +35,8 @@ public class ChannelsController {
             e.printStackTrace();
         }
 
-        //动态添加数据源
-
+//        //动态添加数据源
+//
 //        String url = "jdbc:mysql://localhost:3306/db1";
 //        String username = "root";
 //        String password = "123456";
@@ -80,8 +80,6 @@ public class ChannelsController {
 //        dataSourceConfig2.setDbDriverClass(driverClass);
 //
 //        dataSourceConfigs.add(dataSourceConfig2);
-
-
 //        customSqlSessionTemplate.setTargetSqlSessionFactorys(customSqlSessionFactoryBuilder.buildTargetSqlSessionFactories(dataSourceConfigs));
         try {
             //切换数据源

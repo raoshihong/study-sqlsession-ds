@@ -53,6 +53,9 @@ public class ChannelsService {
         channels.setAppCode("2");
         channels.setLevelType("b");
         channelsMapper.insert(channels);
+
+        System.out.println("aa");
+
         int i=10/0;
     }
 
