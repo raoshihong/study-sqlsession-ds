@@ -38,4 +38,16 @@ public class ChannelsController {
             e.printStackTrace();
         }
     }
+
+    @GetMapping(value = "/test")
+    public void test(){
+        SqlSessionFactoryHolder.setType("db3");
+        channelsService.test();
+    }
+
+    @GetMapping(value = "/test2")
+    public void test2(){
+        SqlSessionFactoryHolder.setType("db3");
+        channelsService.test2();
+    }
 }

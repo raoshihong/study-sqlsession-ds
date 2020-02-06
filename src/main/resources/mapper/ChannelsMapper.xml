@@ -5,4 +5,7 @@
         insert into channels(name,level_type,app_code)
         values(#{name},#{levelType},#{appCode})
     </insert>
+    <select id="select" resultType="com.daoyuan.study.sqlsession.ds.entity.Channels">
+        select * from channels
+    </select>
 </mapper>

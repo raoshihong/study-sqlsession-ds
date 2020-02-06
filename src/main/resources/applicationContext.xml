@@ -92,11 +92,11 @@
 	<!--</bean>-->
 
 	<!-- 通过扫描的模式，扫描目录在com/hoo/任意目录下的mapper目录下，所有的mapper都需要继承SqlMapper接口的接口 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.daoyuan.study.sqlsession.ds.mapper"/>
-		<!-- 注意注入sqlSessionTemplate -->
-		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/>
-		<!--<property name="markerInterface" value="com.hoo.framework.mybatis.SqlMapper"/>-->
-	</bean>
+<!--	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+<!--		<property name="basePackage" value="com.daoyuan.study.sqlsession.ds.mapper"/>-->
+<!--		&lt;!&ndash; 注意注入sqlSessionTemplate &ndash;&gt;-->
+<!--		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/>-->
+<!--		&lt;!&ndash;<property name="markerInterface" value="com.hoo.framework.mybatis.SqlMapper"/>&ndash;&gt;-->
+<!--	</bean>-->
 
 </beans>

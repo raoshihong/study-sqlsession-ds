@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+
 @Service
 public class ChannelsService {
     @Autowired
@@ -79,5 +82,40 @@ public class ChannelsService {
 
 //        int i = 10/0;
 
+    }
+
+    public void test(){
+
+        List<Channels> channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
+
+        SqlSessionFactoryHolder.setType("db1");
+        channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
+
+        SqlSessionFactoryHolder.setType("db2");
+        channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
+    }
+
+    @Transactional
+    public void test2(){
+
+        List<Channels> channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
+
+        SqlSessionFactoryHolder.setType("db1");
+        channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
+
+        SqlSessionFactoryHolder.setType("db2");
+        channelsList = channelsMapper.select();
+
+        System.out.println(channelsList);
     }
 }
