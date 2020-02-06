@@ -111,6 +111,10 @@ public class CustomSqlSessionFactoryBuilder{
         return dataSources;
     }
 
+    public Map<String,DataSource> getDataSourceMap(){
+        return this.dataSourceMap;
+    }
+
     public DynamicDataSource buildDynamicDataSource(){
         Map<Object,Object> targetDataSources = new HashMap<>();
         targetDataSources.putAll(dataSourceMap);

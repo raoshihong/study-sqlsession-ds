@@ -50,4 +50,16 @@ public class ChannelsController {
         SqlSessionFactoryHolder.setType("db3");
         channelsService.test2();
     }
+
+    @GetMapping(value = "/insert")
+    public void insert(){
+        SqlSessionFactoryHolder.setType("db2");
+        channelsService.insert();
+    }
+
+    @GetMapping(value = "/insert2")
+    public void insert2(){
+        SqlSessionFactoryHolder.setType("db2");
+        channelsService.insert2();
+    }
 }

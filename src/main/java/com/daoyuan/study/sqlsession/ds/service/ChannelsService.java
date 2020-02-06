@@ -118,4 +118,47 @@ public class ChannelsService {
 
         System.out.println(channelsList);
     }
+
+    public void insert(){
+        Channels channels = new Channels();
+        channels.setAppCode("2");
+        channels.setLevelType("2");
+        channels.setName("2");
+        channelsMapper.insert(channels);
+
+        SqlSessionFactoryHolder.setType("db1");
+        channels.setAppCode("1");
+        channels.setLevelType("1");
+        channels.setName("1");
+        channelsMapper.insert(channels);
+
+        SqlSessionFactoryHolder.setType("db3");
+        channels.setAppCode("3");
+        channels.setLevelType("3");
+        channels.setName("3");
+        channelsMapper.insert(channels);
+    }
+
+    @Transactional
+    public void insert2(){
+        Channels channels = new Channels();
+        channels.setAppCode("2");
+        channels.setLevelType("2");
+        channels.setName("2");
+        channelsMapper.insert(channels);
+
+        SqlSessionFactoryHolder.setType("db1");
+        channels.setAppCode("1");
+        channels.setLevelType("1");
+        channels.setName("1");
+        channelsMapper.insert(channels);
+
+        SqlSessionFactoryHolder.setType("db3");
+        channels.setAppCode("3");
+        channels.setLevelType("3");
+        channels.setName("3");
+        channelsMapper.insert(channels);
+
+        int i = 10/0;
+    }
 }
