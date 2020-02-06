@@ -95,7 +95,7 @@ public class ChannelsService {
 
         System.out.println(channelsList);
 
-        SqlSessionFactoryHolder.setType("db2");
+        SqlSessionFactoryHolder.setType("db3");
         channelsList = channelsMapper.select();
 
         System.out.println(channelsList);

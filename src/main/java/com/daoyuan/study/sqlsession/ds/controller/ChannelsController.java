@@ -41,7 +41,7 @@ public class ChannelsController {
 
     @GetMapping(value = "/test")
     public void test(){
-        SqlSessionFactoryHolder.setType("db3");
+        SqlSessionFactoryHolder.setType("db2");
         channelsService.test();
     }
 

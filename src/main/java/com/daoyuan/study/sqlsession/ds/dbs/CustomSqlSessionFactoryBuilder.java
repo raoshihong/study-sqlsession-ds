@@ -1,8 +1,10 @@
 package com.daoyuan.study.sqlsession.ds.dbs;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.xa.DruidXADataSource;
+import com.atomikos.jdbc.AtomikosDataSourceBean;
 import com.daoyuan.study.sqlsession.ds.constants.DataSourceConstants;
-import com.daoyuan.study.sqlsession.ds.entity.DataSourceConfig;
+import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import javax.sql.XADataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -91,9 +94,36 @@ public class CustomSqlSessionFactoryBuilder{
      * @return
      */
     private DataSource buildDataSource(Properties properties){
-        DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.configFromPropety(properties);
-        return druidDataSource;
+//        DruidDataSource druidDataSource = new DruidDataSource();
+        DruidXADataSource dataSource = new DruidXADataSource();
+        dataSource.configFromPropety(properties);
+//        dataSource.setValidationQuery("select 1");
+//        MysqlXADataSource dataSource = new MysqlXADataSource();
+//        dataSource.setUrl(properties.getProperty("druid.url"));
+//        dataSource.setUsername(properties.getProperty("druid.username"));
+//        dataSource.setPassword(properties.getProperty("druid.password"));
+//        dataSource.setPinGlobalTxToPhysicalConnection(true);
+        return dataSource;
+    }
+
+    /**
+     * 使用XA
+     * @return
+     */
+    private AtomikosDataSourceBean buildAtomikosDataSourceBean(XADataSource xaDataSource) throws Exception{
+        AtomikosDataSourceBean atomikosDataSourceBean = new AtomikosDataSourceBean();
+        atomikosDataSourceBean.setPoolSize(10);
+        atomikosDataSourceBean.setMinPoolSize(10);
+        atomikosDataSourceBean.setMaxPoolSize(100);
+        atomikosDataSourceBean.setBorrowConnectionTimeout(60);
+        atomikosDataSourceBean.setReapTimeout(10);
+        atomikosDataSourceBean.setMaxIdleTime(60);// 最大空闲时间
+        atomikosDataSourceBean.setMaintenanceInterval(60);
+        atomikosDataSourceBean.setLoginTimeout(60);
+        atomikosDataSourceBean.setTestQuery("select 1");
+        atomikosDataSourceBean.setXaDataSource(xaDataSource);
+
+        return atomikosDataSourceBean;
     }
 
     /**
@@ -101,31 +131,40 @@ public class CustomSqlSessionFactoryBuilder{
      * @return
      */
     public Map<String,DataSource> buildDataSources(){
-        Map<String,DataSource> dataSources = new HashMap<>();
-        for (String key : propertiesMap.keySet()){//key = db1,db2
-            Properties properties = propertiesMap.get(key);
-            //在这里取出一个默认数据源
-            dataSources.put(key,buildDataSource(properties));
-        }
+        Map<String, DataSource> dataSources = new HashMap<>();
+        try {
+            for (String key : propertiesMap.keySet()) {//key = db1,db2
+                Properties properties = propertiesMap.get(key);
 
+                DataSource dataSource = buildDataSource(properties);
+
+                //包装成XADataSource
+                AtomikosDataSourceBean atomikosDataSourceBean = buildAtomikosDataSourceBean((XADataSource) dataSource);
+                atomikosDataSourceBean.setUniqueResourceName(key);
+
+                dataSources.put(key, atomikosDataSourceBean);
+            }
+        }catch (Exception e){
+            log.info("构建数据源失败:{}",e);
+        }
         return dataSources;
     }
 
-    public Map<String,DataSource> getDataSourceMap(){
-        return this.dataSourceMap;
-    }
+//    public Map<String,DataSource> getDataSourceMap(){
+//        return this.dataSourceMap;
+//    }
 
-    public DynamicDataSource buildDynamicDataSource(){
-        Map<Object,Object> targetDataSources = new HashMap<>();
-        targetDataSources.putAll(dataSourceMap);
-
-        //创建动态数据源对象
-        DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.addTargetDataSources(targetDataSources);
-        dynamicDataSource.setDefaultTargetDataSource(targetDataSources.get(DataSourceConstants.DEFAULT_DBS_ALIAS));
-
-        return dynamicDataSource;
-    }
+//    public DynamicDataSource buildDynamicDataSource(){
+//        Map<Object,Object> targetDataSources = new HashMap<>();
+//        targetDataSources.putAll(dataSourceMap);
+//
+//        //创建动态数据源对象
+//        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+//        dynamicDataSource.addTargetDataSources(targetDataSources);
+//        dynamicDataSource.setDefaultTargetDataSource(targetDataSources.get(DataSourceConstants.DEFAULT_DBS_ALIAS));
+//
+//        return dynamicDataSource;
+//    }
 
 
     /**
@@ -141,38 +180,40 @@ public class CustomSqlSessionFactoryBuilder{
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setTypeAliasesPackage(typeAliasesPackage);
         SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject();
+
         return sqlSessionFactory;
     }
 
     /**
-     * 根据多个数据源信息创建多个数据源,并创建多个SqlSessionFactory,用于支持多个加密
+     * 根据多个数据源信息创建多个数据源,并创建多个SqlSessionFactory,用于支持多个加密和多个数据源
      * @return
      */
-    public Map<Object, SqlSessionFactory> buildSqlSessionFactories() {
+    public Map<String, SqlSessionFactory> buildSqlSessionFactories() throws Exception{
 
-        Map<Object,SqlSessionFactory> targetSqlSessionFactories = new HashMap<Object, SqlSessionFactory>();
+        Map<String,SqlSessionFactory> sqlSessionFactoryMap = new HashMap<String, SqlSessionFactory>();
 
-        dataSourceMap.forEach((key, dataSource) -> {
-            try {
-                //每个sqlSessionFactory都持有对应的数据源
-                targetSqlSessionFactories.put(key, buildSqlSessionFactory(dataSource));
-            } catch (Exception e) {
-                log.info("创建sqlSessionFactory失败:{}", e);
-            }
-        });
+        for (String key: dataSourceMap.keySet()){
+            DataSource dataSource = dataSourceMap.get(key);
+            sqlSessionFactoryMap.put(key, buildSqlSessionFactory(dataSource));
+        }
 
-        return targetSqlSessionFactories;
+        return sqlSessionFactoryMap;
     }
 
     /**
      * 根据sqlSessionFactory构建SqlSessionTemplate
      * @return
      */
-    public SqlSessionTemplate buildSqlSessionTemplate(){
-        Map<Object, SqlSessionFactory> sqlSessionFactoryMap = buildSqlSessionFactories();
-        CustomSqlSessionTemplate customSqlSessionTemplate = new CustomSqlSessionTemplate(sqlSessionFactoryMap.get(DataSourceConstants.DEFAULT_DBS_ALIAS));
-        customSqlSessionTemplate.setDefaultTargetSqlSessionFactory(sqlSessionFactoryMap.get(DataSourceConstants.DEFAULT_DBS_ALIAS));
-        customSqlSessionTemplate.setTargetSqlSessionFactorys(sqlSessionFactoryMap);
+    public SqlSessionTemplate buildSqlSessionTemplate() throws Exception{
+        Map<String, SqlSessionFactory> sqlSessionFactoryMap = buildSqlSessionFactories();
+
+        Map<Object,SqlSessionFactory> targetSqlSessionFactorys = new HashMap<>();
+        targetSqlSessionFactorys.putAll(sqlSessionFactoryMap);
+
+        SqlSessionFactory defaultSqlSessionFactory = targetSqlSessionFactorys.get(DataSourceConstants.DEFAULT_DBS_ALIAS);
+        CustomSqlSessionTemplate customSqlSessionTemplate = new CustomSqlSessionTemplate(defaultSqlSessionFactory);
+        customSqlSessionTemplate.setDefaultTargetSqlSessionFactory(defaultSqlSessionFactory);
+        customSqlSessionTemplate.setTargetSqlSessionFactorys(targetSqlSessionFactorys);
         return customSqlSessionTemplate;
     }
 
