@@ -89,7 +89,6 @@ public class CustomSqlSessionFactoryBuilder{
                 if (key.startsWith(DBSConstants.JTA_PREFIX)) {
                     alias = DBSConstants.DEFAULT_DBS_ALIAS;
                 }else {
-
                     alias = key.substring(0,index-1);
                 }
                 subKey = key.substring(index+DBSConstants.JTA_PREFIX.length());
