@@ -1,7 +1,8 @@
 package com.daoyuan.study.sqlsession.ds.constants;
 
-public interface DataSourceConstants {
+public interface DBSConstants {
     String DEFAULT_DBS_ALIAS = "db1";
     String DBS_PREFIX = "spring.datasource.";
-    String SUB_PREFIX = "druid.";
+    String DRUID_PREFIX = "druid.";
+    String JTA_PREFIX = "jta.";
 }
